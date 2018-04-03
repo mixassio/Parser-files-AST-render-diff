@@ -17,17 +17,9 @@ program
   .option('-f, --format [type]', 'Output format');
 program.parse(process.argv);
 
-try {
-  var data1 = fs.readFileSync(pathFile1);
-} catch (e) {
-  console.error(err);
-}
-const content1 = JSON.parse(data1);
-try {
-  var data2 = fs.readFileSync(pathFile2);
-} catch(e) {
-  console.error(err);
-}
-const content2 = JSON.parse(data2);
+const data1 = (fs.existsSync(pathFile1)) ? fs.readFileSync(pathFile1) : false;
+const content1 = (data1) ? JSON.parse(data1) : {};
+const data2 = (fs.existsSync(pathFile2)) ? fs.readFileSync(pathFile2) : false;
+const content2 = (data2) ? JSON.parse(data2) : {};
 
 console.log(genDiff(content1, content2));
