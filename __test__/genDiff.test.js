@@ -1,4 +1,4 @@
-import genDiff from '../lib/genDiff';
+import genDiff from '../src/genDiff';
 
 test('genDiff', () => {
   const a = { a: 1 };
