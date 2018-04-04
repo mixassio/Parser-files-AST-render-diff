@@ -7,8 +7,9 @@ const genDiff = (pathFile1, pathFile2) => {
   const data2 = (fs.existsSync(pathFile2)) ? fs.readFileSync(pathFile2) : false;
   const content2 = (data2) ? JSON.parse(data2) : {};
 
+  console.log(pathFile1, pathFile2, 'test');
   const allKeys = Object.keys({ ...content1, ...content2 });
-  console.log(allKeys, content1, content2)
+  console.log(allKeys, content1, content2);
   const res = allKeys.reduce((acc, key) => {
     if (_.has(content1, key) && _.has(content2, key)) {
       return (content1[key] === content2[key]) ? [`    ${key}: ${content1[key]}`, ...acc] : [`  - ${key}: ${content1[key]}\n  + ${key}: ${content2[key]}`, ...acc];
