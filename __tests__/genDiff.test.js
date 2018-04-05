@@ -1,5 +1,5 @@
 import fs from 'fs';
-import genDiff from '../src/genDiff';
+import genDiff from '../src';
 
 test('genDiff', () => {
   const idealContent = fs.readFileSync(`${__dirname}/__fixtures__/answer.txt`, 'utf8')
