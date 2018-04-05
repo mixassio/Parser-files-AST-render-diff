@@ -15,13 +15,15 @@ const genDiff = (pathFile1, pathFile2) => {
 
   const res = allKeys.reduce((acc, key) => {
     if (_.has(content1, key) && _.has(content2, key)) {
-      return (content1[key] === content2[key]) ? [`    ${key}: ${content1[key]}`, ...acc] : [`  - ${key}: ${content1[key]}\n  + ${key}: ${content2[key]}`, ...acc];
+      if (content1[key] === content2[key]) {
+        return [`    ${key}: ${content1[key]}`, ...acc];
+      }
+      return [`  - ${key}: ${content1[key]}\n  + ${key}: ${content2[key]}`, ...acc];
     } else if (_.has(content1, key)) {
       return [`  - ${key}: ${content1[key]}`, ...acc];
     }
     return [`  + ${key}: ${content2[key]}`, ...acc];
   }, []);
-  console.log(['{', ...res, '}'].join('\n'));
   return ['{', ...res, '}'].join('\n');
 };
 
