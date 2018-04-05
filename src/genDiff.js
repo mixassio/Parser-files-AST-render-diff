@@ -7,12 +7,10 @@ const genDiff = (pathFile1, pathFile2) => {
   const ext1 = path.extname(pathFile1);
   const ext2 = path.extname(pathFile2);
 
-  const data1 = fs.readFileSync(pathFile1);
-  const data2 = fs.readFileSync(pathFile2);
-
+  const data1 = fs.readFileSync(pathFile1, 'utf8');
+  const data2 = fs.readFileSync(pathFile2, 'utf8');
   const content1 = parse(ext1, data1);
   const content2 = parse(ext2, data2);
-
   const allKeys = _.union(_.keys(content1), _.keys(content2));
 
   const res = allKeys.reduce((acc, key) => {
@@ -23,7 +21,7 @@ const genDiff = (pathFile1, pathFile2) => {
     }
     return [`  + ${key}: ${content2[key]}`, ...acc];
   }, []);
-
+  console.log(['{', ...res, '}'].join('\n'));
   return ['{', ...res, '}'].join('\n');
 };
 

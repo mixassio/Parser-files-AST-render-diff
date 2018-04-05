@@ -1,4 +1,4 @@
-import { parse } from 'ini';
+import ini from 'ini';
 import { safeLoad } from 'js-yaml';
 
 export default (format, data) => {
@@ -10,7 +10,7 @@ export default (format, data) => {
     case '.yml':
       return safeLoad(data);
     case '.ini':
-      return parse(data);
+      return ini.parse(data);
     default:
       throw new Error(`unkown format: ${format}`);
   }
