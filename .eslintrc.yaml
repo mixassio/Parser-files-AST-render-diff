@@ -3,6 +3,7 @@
 plugins:
   - jest
   - flowtype
+  - babel
 
 env:
   node: true
