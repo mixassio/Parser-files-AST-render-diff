@@ -2,6 +2,7 @@ import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 import parse from './parser';
+import stringify from './stringify';
 
 const CreateAST = (nodeBefore, nodeAfter) => {
   const allKeys = _.union(_.keys(nodeBefore), _.keys(nodeAfter));
@@ -29,6 +30,28 @@ const CreateAST = (nodeBefore, nodeAfter) => {
   return AST;
 };
 
+const render = (AST) => {
+  const keys = _.keys(AST);
+  const dif = keys.reduce((acc, key) => {
+    console.log(key, acc)
+    if (AST[key].values.typeNode === 'unchange') {
+      return [`    ${key}: ${stringify(AST[key].values.old)}`, ...acc];
+    }
+    if (AST[key].values.typeNode === 'deleted') {
+      return [`  - ${key}: ${stringify(AST[key].values.old)}`, ...acc];
+    }
+    if (AST[key].values.typeNode === 'added') {
+      return [`  + ${key}: ${stringify(AST[key].values.new)}`, ...acc];
+    }
+    if (AST[key].values.typeNode === 'updated') {
+      return [`  - ${key}: ${stringify(AST[key].values.old)}\n  + ${key}: ${stringify(AST[key].values.new)}`, ...acc];
+    }
+    if (AST[key].values.typeNode === 'nested') {
+      return [`    ${key}: ${render(AST[key].children)}`, ...acc];
+    }
+  }, '');
+  return ['{', ...dif, '}'].join('\n');
+};
 
 const genDiff = (pathFile1, pathFile2) => {
   const ext1 = path.extname(pathFile1);
@@ -40,7 +63,8 @@ const genDiff = (pathFile1, pathFile2) => {
   const content2 = parse(ext2, data2);
   const AST = CreateAST(content1, content2);
   console.log(JSON.stringify(AST));
-  return AST;
+  const dif = render(AST);
+  return dif;
 };
 
 export default genDiff;
