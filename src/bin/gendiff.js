@@ -8,7 +8,7 @@ program
   .version('0.0.1')
   .arguments('<file1> <file2>')
   .action((pathFile1, pathFile2) => {
-    console.log(genDifTree(pathFile1, pathFile2));
+    console.log(genDifTree(pathFile1, pathFile2, program.format));
   })
   .option('-f, --format [type]', 'Output format')
   .parse(process.argv);
