@@ -1,3 +1,3 @@
-import genDiff from './genDifTree';
+import genDifTree from './genDifTree';
 
-export default genDiff;
+export default genDifTree;
