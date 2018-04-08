@@ -1,33 +1,30 @@
 import _ from 'lodash';
 
-const getTypeNode = (oldValue, newValue) => {
-  if (oldValue === newValue) {
+const getTypeNode = (nodeBefore, nodeAfter, key) => {
+  if (nodeBefore[key] === nodeAfter[key]) {
     return 'unchange';
   }
-  if (oldValue === undefined) {
+  if (!_.has(nodeBefore, key)) {
     return 'added';
-  } else if (newValue === undefined) {
+  } else if (!_.has(nodeAfter, key)) {
     return 'deleted';
   }
   return 'updated';
 };
 
-
 const createAST = (nodeBefore, nodeAfter) => {
   const allKeys = _.union(_.keys(nodeBefore), _.keys(nodeAfter));
   const AST = allKeys.reduce((acc, key) => {
-    const oldValue = nodeBefore[key];
-    const newValue = nodeAfter[key];
-    if (!(oldValue instanceof Object) || !(newValue instanceof Object)) {
-      const typeNode = getTypeNode(oldValue, newValue);
+    if (!(nodeBefore[key] instanceof Object) || !(nodeAfter[key] instanceof Object)) {
+      const typeNode = getTypeNode(nodeBefore, nodeAfter, key);
       const node = {
-        old: oldValue,
-        new: newValue,
+        old: nodeBefore[key],
+        new: nodeAfter[key],
         typeNode,
       };
-      return { ...acc, [key]: { values: { ...node } } };
+      return { ...acc, [key]: { ...node } };
     }
-    return { ...acc, [key]: { values: { typeNode: 'nested' }, children: createAST(oldValue, newValue) } };
+    return { ...acc, [key]: { typeNode: 'nested', children: createAST(nodeBefore[key], nodeAfter[key]) } };
   }, {});
   return AST;
 };

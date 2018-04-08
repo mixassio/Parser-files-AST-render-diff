@@ -17,7 +17,6 @@ const genDiff = (pathFile1, pathFile2, type) => {
   const content2 = parse2(data2);
 
   const ast = getAST(content1, content2);
-
   const render = getRender(type);
   return render(ast);
 };

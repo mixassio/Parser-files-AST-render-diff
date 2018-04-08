@@ -10,21 +10,18 @@ const stringify = (data) => {
 const renderPlant = (ast, prefix = '') => {
   const keys = _.keys(ast);
   return keys.reduce((acc, key) => {
-    if (ast[key].values.typeNode === 'deleted') {
-      console.log(`Property '${prefix}${key}' was removed`);
+    const { [key]: { typeNode } } = ast;
+    switch (typeNode) {
+      case 'deleted':
+        return console.log(`Property '${prefix}${key}' was removed`);
+      case 'added':
+        return console.log(`Property '${prefix}${key}' was added with value ${stringify(ast[key].new)}`);
+      case 'updated':
+        return console.log(`Property '${prefix}${key}' was updated. From '${stringify(ast[key].new)}' to '${stringify(ast[key].new)}'`);
+      default:
+        return renderPlant(ast[key].children, `${prefix}${key}.`);
     }
-    if (ast[key].values.typeNode === 'added') {
-      console.log(`Property '${prefix}${key}' was added with value ${stringify(ast[key].values.new)}`);
-    }
-    if (ast[key].values.typeNode === 'updated') {
-      console.log(`Property '${prefix}${key}' was updated. From '${stringify(ast[key].values.new)}' to '${stringify(ast[key].values.new)}'`);
-    }
-    if (ast[key].values.typeNode === 'nested') {
-      return renderPlant(ast[key].children, `${prefix}${key}.`);
-    }
-    return null;
   }, '');
 };
 
 export default renderPlant;
-
