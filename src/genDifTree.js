@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import getParser from './parser';
-import { render, renderPlant } from './renders';
+import getRender from './renders';
 import getAST from './getAST';
 
 
@@ -16,11 +16,10 @@ const genDiff = (pathFile1, pathFile2, type) => {
   const content1 = parse1(data1);
   const content2 = parse2(data2);
 
-  const AST = getAST(content1, content2);
-  if (type === 'plant') {
-    return renderPlant(AST);
-  }
-  return render(AST);
+  const ast = getAST(content1, content2);
+
+  const render = getRender(type);
+  return render(ast);
 };
 
 export default genDiff;
