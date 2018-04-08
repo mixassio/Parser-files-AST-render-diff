@@ -5,7 +5,7 @@ import getRender from './renders';
 import getAst from './getAst';
 
 
-const genDiff = (pathFile1, pathFile2, type = 'stylish') => {
+const genDiffTree = (pathFile1, pathFile2, type) => {
   const ext1 = path.extname(pathFile1);
   const ext2 = path.extname(pathFile2);
 
@@ -20,4 +20,4 @@ const genDiff = (pathFile1, pathFile2, type = 'stylish') => {
   return render(ast);
 };
 
-export default genDiff;
+export default genDiffTree;
