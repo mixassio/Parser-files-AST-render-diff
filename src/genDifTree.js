@@ -8,7 +8,6 @@ import getAst from './getAst';
 const genDiffTree = (pathFile1, pathFile2, type) => {
   const ext1 = path.extname(pathFile1);
   const ext2 = path.extname(pathFile2);
-
   const data1 = fs.readFileSync(pathFile1, 'utf8');
   const data2 = fs.readFileSync(pathFile2, 'utf8');
   const parse1 = getParser(ext1);
