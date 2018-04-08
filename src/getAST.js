@@ -1,28 +1,33 @@
 import _ from 'lodash';
 
+const getTypeNode = (oldValue, newValue) => {
+  if (oldValue === newValue) {
+    return 'unchange';
+  }
+  if (oldValue === undefined) {
+    return 'added';
+  } else if (newValue === undefined) {
+    return 'deleted';
+  }
+  return 'updated';
+};
+
+
 const createAST = (nodeBefore, nodeAfter) => {
   const allKeys = _.union(_.keys(nodeBefore), _.keys(nodeAfter));
   const AST = allKeys.reduce((acc, key) => {
     const oldValue = nodeBefore[key];
     const newValue = nodeAfter[key];
-    const node = {};
     if (!(oldValue instanceof Object) || !(newValue instanceof Object)) {
-      node.old = oldValue;
-      node.new = newValue;
-      if (node.new === node.old) {
-        node.typeNode = 'unchange';
-      } else {
-        node.typeNode = 'updated';
-      }
-      if (node.old === undefined) {
-        node.typeNode = 'added';
-      } else if (node.new === undefined) {
-        node.typeNode = 'deleted';
-      }
+      const typeNode = getTypeNode(oldValue, newValue);
+      const node = {
+        old: oldValue,
+        new: newValue,
+        typeNode,
+      };
       return { ...acc, [key]: { values: { ...node } } };
     }
-    node.typeNode = 'nested';
-    return { ...acc, [key]: { values: { ...node }, children: createAST(oldValue, newValue) } };
+    return { ...acc, [key]: { values: { typeNode: 'nested' }, children: createAST(oldValue, newValue) } };
   }, {});
   return AST;
 };

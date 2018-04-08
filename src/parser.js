@@ -1,17 +1,17 @@
 import ini from 'ini';
 import { safeLoad } from 'js-yaml';
 
-export default (format, data) => {
-  switch (format) {
-    case '':
-    case '.json':
-      return JSON.parse(data);
-    case '.yaml':
-    case '.yml':
-      return safeLoad(data);
-    case '.ini':
-      return ini.parse(data);
-    default:
-      throw new Error(`unkown format: ${format}`);
+const parsers = {
+  '.json': JSON.parse,
+  '.yaml': safeLoad,
+  '.yml': safeLoad,
+  '.ini': ini.parse,
+};
+
+export default format => (data) => {
+  const parse = parsers[format];
+  if (!parse) {
+    throw new Error(`unkown format: ${format}`);
   }
+  return parse(data);
 };
