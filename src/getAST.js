@@ -12,7 +12,7 @@ const getTypeNode = (nodeBefore, nodeAfter, key) => {
   return 'updated';
 };
 
-const createAST = (nodeBefore, nodeAfter) => {
+const createAst = (nodeBefore, nodeAfter) => {
   const allKeys = _.union(_.keys(nodeBefore), _.keys(nodeAfter));
   const ast = allKeys.reduce((acc, key) => {
     if (!(nodeBefore[key] instanceof Object) || !(nodeAfter[key] instanceof Object)) {
@@ -24,9 +24,9 @@ const createAST = (nodeBefore, nodeAfter) => {
       };
       return { ...acc, [key]: { ...node } };
     }
-    return { ...acc, [key]: { typeNode: 'nested', children: createAST(nodeBefore[key], nodeAfter[key]) } };
+    return { ...acc, [key]: { typeNode: 'nested', children: createAst(nodeBefore[key], nodeAfter[key]) } };
   }, {});
   return ast;
 };
 
-export default createAST;
+export default createAst;

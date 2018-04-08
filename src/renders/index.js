@@ -1,4 +1,4 @@
-import renderDefault from './render';
+import renderDefault from './renderDefault';
 import renderPlant from './renderPlant';
 
 const renders = {

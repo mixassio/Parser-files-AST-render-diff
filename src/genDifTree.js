@@ -2,10 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import getParser from './parser';
 import getRender from './renders';
-import getAST from './getAST';
+import getAst from './getAst';
 
 
-const genDiff = (pathFile1, pathFile2, type) => {
+const genDiff = (pathFile1, pathFile2, type = 'stylish') => {
   const ext1 = path.extname(pathFile1);
   const ext2 = path.extname(pathFile2);
 
@@ -15,7 +15,7 @@ const genDiff = (pathFile1, pathFile2, type) => {
   const parse2 = getParser(ext2);
   const content1 = parse1(data1);
   const content2 = parse2(data2);
-  const ast = getAST(content1, content2);
+  const ast = getAst(content1, content2);
   const render = getRender(type);
   return render(ast);
 };

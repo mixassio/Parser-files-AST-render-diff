@@ -9,7 +9,7 @@ const stringify = (data) => {
 
 const renderPlant = (ast, prefix = '') => {
   const keys = _.keys(ast);
-  const output = keys.reduce((acc, key) => {
+  const dif = keys.reduce((acc, key) => {
     const { [key]: { typeNode } } = ast;
     const oldValue = ast[key].old;
     const newValue = ast[key].new;
@@ -24,7 +24,7 @@ const renderPlant = (ast, prefix = '') => {
         return [renderPlant(ast[key].children, `${prefix}${key}.`), ...acc];
     }
   }, '');
-  return [...output].filter(el => el !== '').join('\n');
+  return [...dif].filter(el => el !== '').join('\n');
 };
 
 export default renderPlant;
