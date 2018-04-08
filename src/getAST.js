@@ -24,7 +24,7 @@ const getAst = (nodeBefore, nodeAfter) => {
       };
       return { ...acc, [key]: { ...node } };
     }
-    return { ...acc, [key]: { typeNode: 'nested', children: createAst(nodeBefore[key], nodeAfter[key]) } };
+    return { ...acc, [key]: { typeNode: 'nested', children: getAst(nodeBefore[key], nodeAfter[key]) } };
   }, {});
   return ast;
 };
