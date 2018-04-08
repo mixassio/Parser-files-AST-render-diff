@@ -12,7 +12,7 @@ const getTypeNode = (nodeBefore, nodeAfter, key) => {
   return 'updated';
 };
 
-const createAst = (nodeBefore, nodeAfter) => {
+const getAst = (nodeBefore, nodeAfter) => {
   const allKeys = _.union(_.keys(nodeBefore), _.keys(nodeAfter));
   const ast = allKeys.reduce((acc, key) => {
     if (!(nodeBefore[key] instanceof Object) || !(nodeAfter[key] instanceof Object)) {
@@ -29,4 +29,4 @@ const createAst = (nodeBefore, nodeAfter) => {
   return ast;
 };
 
-export default createAst;
+export default getAst;
