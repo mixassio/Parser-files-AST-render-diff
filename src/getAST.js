@@ -14,7 +14,7 @@ const getTypeNode = (nodeBefore, nodeAfter, key) => {
 
 const createAST = (nodeBefore, nodeAfter) => {
   const allKeys = _.union(_.keys(nodeBefore), _.keys(nodeAfter));
-  const AST = allKeys.reduce((acc, key) => {
+  const ast = allKeys.reduce((acc, key) => {
     if (!(nodeBefore[key] instanceof Object) || !(nodeAfter[key] instanceof Object)) {
       const typeNode = getTypeNode(nodeBefore, nodeAfter, key);
       const node = {
@@ -26,7 +26,7 @@ const createAST = (nodeBefore, nodeAfter) => {
     }
     return { ...acc, [key]: { typeNode: 'nested', children: createAST(nodeBefore[key], nodeAfter[key]) } };
   }, {});
-  return AST;
+  return ast;
 };
 
 export default createAST;
