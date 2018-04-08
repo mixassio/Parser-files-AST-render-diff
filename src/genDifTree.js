@@ -5,7 +5,7 @@ import getRender from './renders';
 import getAst from './getAst';
 
 
-const genDiffTree = (pathFile1, pathFile2, type) => {
+const genDifTree = (pathFile1, pathFile2, type) => {
   const ext1 = path.extname(pathFile1);
   const ext2 = path.extname(pathFile2);
   const data1 = fs.readFileSync(pathFile1, 'utf8');
@@ -19,4 +19,4 @@ const genDiffTree = (pathFile1, pathFile2, type) => {
   return render(ast);
 };
 
-export default genDiffTree;
+export default genDifTree;
