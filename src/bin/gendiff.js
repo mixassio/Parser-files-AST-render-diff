@@ -10,5 +10,5 @@ program
   .action((pathFile1, pathFile2) => {
     console.log(genDifTree(pathFile1, pathFile2, program.format));
   })
-  .option('-f, --format [type]', 'Output format')
+  .option('-f, --format [type]', 'Output format', 'stylish')
   .parse(process.argv);

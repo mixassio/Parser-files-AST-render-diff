@@ -1,14 +1,14 @@
-import render from './render';
+import renderDefault from './render';
 import renderPlant from './renderPlant';
 
 const renders = {
   plant: renderPlant,
-  undefined: render,
+  stylish: renderDefault,
   json: JSON.stringify,
 };
 
 export default format => (data) => {
-  const rend = renders[format];
-  return rend(data);
+  const render = renders[format];
+  return render(data);
 };
 

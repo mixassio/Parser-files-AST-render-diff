@@ -9,19 +9,22 @@ const stringify = (data) => {
 
 const renderPlant = (ast, prefix = '') => {
   const keys = _.keys(ast);
-  return keys.reduce((acc, key) => {
+  const output = keys.reduce((acc, key) => {
     const { [key]: { typeNode } } = ast;
+    const oldValue = ast[key].old;
+    const newValue = ast[key].new;
     switch (typeNode) {
       case 'deleted':
-        return console.log(`Property '${prefix}${key}' was removed`);
+        return [`Property '${prefix}${key}' was removed`, ...acc];
       case 'added':
-        return console.log(`Property '${prefix}${key}' was added with value ${stringify(ast[key].new)}`);
+        return [`Property '${prefix}${key}' was added with value ${stringify(newValue)}`, ...acc];
       case 'updated':
-        return console.log(`Property '${prefix}${key}' was updated. From '${stringify(ast[key].new)}' to '${stringify(ast[key].new)}'`);
+        return [`Property '${prefix}${key}' was updated. From '${stringify(oldValue)}' to '${stringify(newValue)}'`, ...acc];
       default:
-        return renderPlant(ast[key].children, `${prefix}${key}.`);
+        return [renderPlant(ast[key].children, `${prefix}${key}.`), ...acc];
     }
   }, '');
+  return [...output].filter(el => el !== '').join('\n');
 };
 
 export default renderPlant;
