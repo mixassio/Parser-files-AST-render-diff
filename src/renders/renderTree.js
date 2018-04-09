@@ -8,7 +8,7 @@ const stringify = (data, countSpases) => {
   return data;
 };
 
-const renderDefault = (ast, countSpases = 2) => {
+const renderTree = (ast, countSpases = 2) => {
   const keys = _.keys(ast);
   const spases = ' '.repeat(countSpases);
   const dif = keys.reduce((acc, key) => {
@@ -25,10 +25,10 @@ const renderDefault = (ast, countSpases = 2) => {
       case 'updated':
         return [`${spases}- ${key}: ${stringify(oldValue, countSpases)}`, `${spases}+ ${key}: ${stringify(newValue, countSpases)}`, ...acc];
       default:
-        return [`${spases}  ${key}: ${renderDefault(ast[key].children, countSpases + 4)}`, ...acc];
+        return [`${spases}  ${key}: ${renderTree(ast[key].children, countSpases + 4)}`, ...acc];
     }
   }, '');
   return ['{', ...dif, `${' '.repeat(countSpases - 2)}}`].join('\n');
 };
 
-export default renderDefault;
+export default renderTree;
