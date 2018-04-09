@@ -11,24 +11,24 @@ const stringify = (data, countSpases) => {
 const renderTree = (ast, countSpases = 2) => {
   const keys = _.keys(ast);
   const spases = ' '.repeat(countSpases);
-  const dif = keys.map((key) => {
-    const { [key]: { typeNode, old: oldValue, new: newValue } } = ast;
+  const dif = keys.reduce((acc, key) => {
+    const { [key]: { typeNode } } = ast;
+    const oldValue = ast[key].old;
+    const newValue = ast[key].new;
     switch (typeNode) {
       case 'unchange':
-        return [`${spases}  ${key}: ${stringify(oldValue, countSpases)}`];
+        return [`${spases}  ${key}: ${stringify(oldValue, countSpases)}`, ...acc];
       case 'deleted':
-        return [`${spases}- ${key}: ${stringify(oldValue, countSpases)}`];
+        return [`${spases}- ${key}: ${stringify(oldValue, countSpases)}`, ...acc];
       case 'added':
-        return [`${spases}+ ${key}: ${stringify(newValue, countSpases)}`];
+        return [`${spases}+ ${key}: ${stringify(newValue, countSpases)}`, ...acc];
       case 'updated':
-        return [`${spases}- ${key}: ${stringify(oldValue, countSpases)}`, `${spases}+ ${key}: ${stringify(newValue, countSpases)}`];
-      case 'nested':
-        return [`${spases}  ${key}: ${renderTree(ast[key].children, countSpases + 4)}`];
+        return [`${spases}- ${key}: ${stringify(oldValue, countSpases)}`, `${spases}+ ${key}: ${stringify(newValue, countSpases)}`, ...acc];
       default:
-        return [];
+        return [`${spases}  ${key}: ${renderTree(ast[key].children, countSpases + 4)}`, ...acc];
     }
-  });
-  return ['{', ..._.flatten(dif), `${' '.repeat(countSpases - 2)}}`].join('\n');
+  }, '');
+  return ['{', ...dif, `${' '.repeat(countSpases - 2)}}`].join('\n');
 };
 
 export default renderTree;
