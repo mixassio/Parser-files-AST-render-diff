@@ -15,15 +15,15 @@ const renderTree = (ast, countSpases = 2) => {
     const { [key]: { typeNode, old: oldValue, new: newValue } } = ast;
     switch (typeNode) {
       case 'unchange':
-        return [`${spases}  ${key}: ${stringify(oldValue, countSpases)}`];
+        return `${spases}  ${key}: ${stringify(oldValue, countSpases)}`;
       case 'deleted':
-        return [`${spases}- ${key}: ${stringify(oldValue, countSpases)}`];
+        return `${spases}- ${key}: ${stringify(oldValue, countSpases)}`;
       case 'added':
-        return [`${spases}+ ${key}: ${stringify(newValue, countSpases)}`];
+        return `${spases}+ ${key}: ${stringify(newValue, countSpases)}`;
       case 'updated':
         return [`${spases}- ${key}: ${stringify(oldValue, countSpases)}`, `${spases}+ ${key}: ${stringify(newValue, countSpases)}`];
       case 'nested':
-        return [`${spases}  ${key}: ${renderTree(ast[key].children, countSpases + 4)}`];
+        return `${spases}  ${key}: ${renderTree(ast[key].children, countSpases + 4)}`;
       default:
         return [];
     }

@@ -13,13 +13,13 @@ const renderPlant = (ast, prefix = '') => {
     const { [key]: { typeNode, old: oldValue, new: newValue } } = ast;
     switch (typeNode) {
       case 'deleted':
-        return [`Property '${prefix}${key}' was removed`];
+        return `Property '${prefix}${key}' was removed`;
       case 'added':
-        return [`Property '${prefix}${key}' was added with value ${stringify(newValue)}`];
+        return `Property '${prefix}${key}' was added with value ${stringify(newValue)}`;
       case 'updated':
-        return [`Property '${prefix}${key}' was updated. From '${stringify(oldValue)}' to '${stringify(newValue)}'`];
+        return `Property '${prefix}${key}' was updated. From '${stringify(oldValue)}' to '${stringify(newValue)}'`;
       case 'nested':
-        return [renderPlant(ast[key].children, `${prefix}${key}.`)];
+        return renderPlant(ast[key].children, `${prefix}${key}.`);
       default:
         return [];
     }
