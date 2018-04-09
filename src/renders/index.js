@@ -1,9 +1,9 @@
-import renderDefault from './renderDefault';
+import renderTree from './renderTree';
 import renderPlant from './renderPlant';
 
 const renders = {
   plant: renderPlant,
-  stylish: renderDefault,
+  stylish: renderTree,
   json: JSON.stringify,
 };
 
